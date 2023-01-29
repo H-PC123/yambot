@@ -1,10 +1,13 @@
-import discord
-from bot import Bot
+import json
+from bot import yamBot
 
-myBot = Bot(command_prefix='.')
+myBot = yamBot(command_prefix='.')
 
-bot_token = "NzkzMTQ2MzM2MDU5OTgxODI1.X-oBFg.bjQ9MfreAucktpKFD27Cbsrvc04"
-#TODO: use secret config
+with open("secrets.json", "r") as f:
+    secrets = json.load(f)
+    print(secrets)
+    bot_token = secrets["bot_token"]
+
 #TODO: handle token passing from program call
 
 myBot.run(bot_token)
