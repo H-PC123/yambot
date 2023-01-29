@@ -12,11 +12,13 @@ class yamBot(commands.Bot):
     def __init__(self, command_prefix):
         super().__init__(command_prefix=command_prefix, intents=self.intents)
 
+    @client.event
     async def on_ready(self):
         print(f"We have logged in as {self.user}")
 
+    @client.event
     async def on_message(self, message):
         if message.author == self.user:
             return
         else:
-            message_handling.handleMessage(message)
+            await message_handling.handle_message(message)
