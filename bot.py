@@ -11,7 +11,7 @@ class Bot(commands.Bot):
 
     
     async def on_ready():
-        print('We have logged in as {0.user}'.format(client))
+        print(f"We have logged in as {self.user}")
 
     async def on_message(message):
         if message.author == client.user:
