@@ -3,13 +3,14 @@ import sys
 import json
 from bot import YamBot
 
+COMMAND_PREFIX = "."
 
 def start_yam(args):
     # should yamBot handle with default intents or should we pass something here to the init call?
-    my_yam = YamBot(command_prefix='.')
+    my_yam = YamBot(command_prefix=COMMAND_PREFIX)
 
     if args:
-        # Get token from args
+        # Get token from args if passed
         bot_token = args[0]
     else:
         # Get token from secret.json if nothing in args
