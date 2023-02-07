@@ -1,9 +1,13 @@
 # TODO: restructure to standard
 import sys
+import os
 import json
+import logging
 from bot import YamBot
 
 COMMAND_PREFIX = "."
+LOGLEVEL = os.environ.get('LOGLEVEL')
+logging.basicConfig(filename='yam.log', encoding='utf-8', level=getattr(logging, LOGLEVEL))
 
 
 def start_yam(args):
@@ -22,6 +26,7 @@ def start_yam(args):
 
     my_yam.run(bot_token)
 # TODO: Implement testing by getting another bot instance to send shit
+
 
 if __name__ == "__main__":
     start_yam(sys.argv[1:])

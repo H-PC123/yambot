@@ -1,5 +1,6 @@
 import discord
 import re
+import logging
 
 
 async def handle_non_command(message: discord.Message) -> None:
@@ -11,7 +12,8 @@ async def handle_non_command(message: discord.Message) -> None:
         video = re.finditer(
             r"(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?\/?.*(?:watch|embed)?(?:.*v=|v\/|\/)([\w\-_]+)\&?",
             message.content)
-        if video:
+        if list(video):
+            logging.debug(f"yt link regex scanned: {list(video)}")
             # message has a yt video link, ask if user wants to play
             await message.reply(f"nice yt link ;)"
                                 f"\n{next(video)[0]}"

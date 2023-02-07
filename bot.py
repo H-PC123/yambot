@@ -1,6 +1,9 @@
 import discord
+import logging
 
 import message_handling
+from yam_player import YamPlayer
+
 from discord.ext import commands
 
 
@@ -13,9 +16,17 @@ class YamBot(commands.Bot):
     def __init__(self, command_prefix: str):
         super().__init__(command_prefix=command_prefix, intents=self.intents)
 
+    async def import_cogs(self) -> None:
+        await self.add_cog(YamPlayer())
+
+    async def setup_hook(self) -> None:
+        await self.import_cogs()
+        logging.debug("Cogs imported")
+
     @client.event
     async def on_ready(self) -> None:
-        print(f"We have logged in as {self.user}")
+        logging.info(f"Logged in as {self.user}")
+        print(f"Logged in as {self.user}")
 
     @client.event
     async def on_message(self, message: discord.Message) -> None:

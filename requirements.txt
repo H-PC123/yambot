@@ -1,2 +1,1 @@
 discord==2.1.0
-ytdl==1.0.0.rc5
