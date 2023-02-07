@@ -26,11 +26,3 @@ class YamBot(commands.Bot):
             # TODO: needs to separate between commands and non commands
             await message_handling.handle_non_command(message)
 # TODO: implement VC usage
-    @commands.command()
-    async def cat(self, ctx, arg):
-        print('made it')
-        await ctx.send(arg)
-
-    @commands.command()
-    async def foo(ctx, arg):
-        await ctx.send(arg)

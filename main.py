@@ -5,6 +5,7 @@ from bot import YamBot
 
 COMMAND_PREFIX = "."
 
+
 def start_yam(args):
     # should yamBot handle with default intents or should we pass something here to the init call?
     my_yam = YamBot(command_prefix=COMMAND_PREFIX)
@@ -20,7 +21,7 @@ def start_yam(args):
             bot_token = secrets["bot_token"]
 
     my_yam.run(bot_token)
-
+# TODO: Implement testing by getting another bot instance to send shit
 
 if __name__ == "__main__":
     start_yam(sys.argv[1:])
