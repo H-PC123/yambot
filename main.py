@@ -3,11 +3,15 @@ import sys
 import os
 import json
 import logging
-from bot import YamBot
+from yam_bot import YamBot
 
 COMMAND_PREFIX = "."
 LOGLEVEL = os.environ.get('LOGLEVEL')
-logging.basicConfig(filename='yam.log', encoding='utf-8', level=getattr(logging, LOGLEVEL))
+logging.basicConfig(filename='yam.log',
+                    encoding='utf-8',
+                    format='%(asctime)s %(message)s',
+                    datefmt='%m/%d/%Y %I:%M:%S %p',
+                    level=getattr(logging, LOGLEVEL))
 
 
 def start_yam(args):
@@ -21,10 +25,11 @@ def start_yam(args):
         # Get token from secret.json if nothing in args
         with open("secrets.json", "r") as f:
             secrets = json.load(f)
-            print(secrets)
             bot_token = secrets["bot_token"]
 
     my_yam.run(bot_token)
+
+
 # TODO: Implement testing by getting another bot instance to send shit
 
 
