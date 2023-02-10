@@ -9,7 +9,7 @@ COMMAND_PREFIX = "."
 LOGLEVEL = os.environ.get('LOGLEVEL')
 logging.basicConfig(filename='yam.log',
                     encoding='utf-8',
-                    format='%(asctime)s %(message)s',
+                    format='%(asctime)s : %(levelname)s : %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S %p',
                     level=getattr(logging, LOGLEVEL))
 
