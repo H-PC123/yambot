@@ -1,4 +1,4 @@
-# turbo-octo-waddle  
+# YamBot
   
 A hastily written python discord bot.  
 Created as a way to get a bit of coding practice as well as checkout some of the newer Python features. 

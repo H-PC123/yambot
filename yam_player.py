@@ -4,6 +4,7 @@ import logging
 import discord
 import urllib3
 import threading
+import concurrent.futures
 from discord.ext import commands
 
 
@@ -13,6 +14,10 @@ class YamPlayer(commands.Cog):
     playable_extensions = ["mp3"]
     media_folder = os.path.join(os.getcwd(), "Downloads")
     pool_manager = urllib3.PoolManager()
+
+    dest_lock = threading.RLock()
+    playlist.lock = []
+    # Will lock a song from being overwritten in the playlist by only releasing after song is played
 
     def __init__(self, media_folder=os.path.join(os.getcwd(), "Downloads"), chunk_size=2048):
         super().__init__()
@@ -29,8 +34,8 @@ class YamPlayer(commands.Cog):
         if ctx.message.attachments:
             playable_attachments = [x for x in ctx.message.attachments if self.check_file(x.url)]
             logging.info(f"Message has the following playable files attached: {playable_attachments}")
-            for att in playable_attachments:
-                await self.store_attachment(att)
+            with self.dest_lock and concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+                executor.map(self.store_attachment, playable_attachments)
                 # TODO: Add item to playlist, then hit play
         elif self.check_link(ctx.message):
             # TODO: parse link or file from message, download, add to playlist, play
@@ -48,15 +53,15 @@ class YamPlayer(commands.Cog):
 
     async def check_link(self, message: discord.Message) -> bool:
         # TODO: add check for link(s) and if is playable content
-        return False
+        raise NotImplementedError
 
-    async def store_attachment(self, att: "Message attachment", destination: str = media_folder) -> bool:
+    def store_attachment(self, att: "Message attachment") -> bool:
         # Downloads music into self.media_folder
+        # TODO: if file is already in folder, return true and set the appropriate references
         # TODO: if file is being played or on the queue, they need to be locked so they aren't overwritten
         logging.debug(f"Attempting download of {att}")
-        # TODO: wait on the request, maybe use threads when this method is called or a wait here
         try:
-            with open(os.path.join(destination, att.filename), "wb+") as dest, \
+            with open(os.path.join(self.media_folder, att.filename), "wb+") as dest, \
                     self.pool_manager.request("GET", att.url, preload_content=False) as req:
                 while True:
                     data = req.read(self.chunk_size)
@@ -65,7 +70,7 @@ class YamPlayer(commands.Cog):
                     dest.write(data)
             logging.info(f"File: {att.filename} downloaded from: {att.url}")
             return True
-        except:
+        except urllib3.exceptions.HTTPError as e:
             # for handling specific errors (that I cant think of yet)
-            logging.debug(f"File: {att.filename} could not be downloaded: {att.url}")
+            logging.debug(f"File: {att.filename} could not be downloaded: {att.url} due to {e}")
             return False
