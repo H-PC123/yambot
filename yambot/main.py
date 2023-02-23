@@ -7,8 +7,10 @@ from yam_bot import YamBot
 
 COMMAND_PREFIX = "."
 LOGLEVEL = os.environ.get('LOGLEVEL')
-logging.basicConfig(filename='yam.log',
-                    filemode='w',
+LOGLEVEL = LOGLEVEL if LOGLEVEL else 'INFO'
+os.makedirs(os.path.dirname('./logs/*'), exist_ok=True)
+logging.basicConfig(filename='./logs/yam.log',
+                    filemode='w+',
                     encoding='utf-8',
                     format='%(asctime)s : %(levelname)s : %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S %p',

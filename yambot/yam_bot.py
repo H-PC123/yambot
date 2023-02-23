@@ -1,8 +1,8 @@
 import discord
 import logging
 
-import message_handling
-from yam_player import YamPlayer
+from yambot import message_handling
+from yambot.yam_player import YamPlayer
 
 from discord.ext import commands
 

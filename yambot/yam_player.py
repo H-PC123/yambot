@@ -15,14 +15,14 @@ class YamPlayer(commands.Cog):
     playlist = []
     # TODO: Need to add Rlock to playlist and make sure methods that add to the playlist use the lock
     playable_extensions = ["mp3"]
-    media_folder = os.path.join(os.getcwd(), "Downloads")
+    media_folder = os.path.join(os.getcwd(), "../Downloads")
     pool_manager = urllib3.PoolManager(maxsize=3)
 
     dest_lock = threading.RLock()
 
     # Will lock a song from being overwritten in the playlist by only releasing after song is played
 
-    def __init__(self, media_folder=os.path.join(os.getcwd(), "Downloads"), chunk_size=2048, filename_size=32):
+    def __init__(self, media_folder=os.path.join(os.getcwd(), "../Downloads"), chunk_size=2048, filename_size=32):
         super().__init__()
         self.media_folder = media_folder
         self.chunk_size = chunk_size
