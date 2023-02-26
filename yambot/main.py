@@ -3,7 +3,7 @@ import sys
 import os
 import json
 import logging
-from yam_bot import YamBot
+from yambot.yam_bot import YamBot
 
 COMMAND_PREFIX = "."
 LOGLEVEL = os.environ.get('LOGLEVEL')
@@ -17,24 +17,22 @@ logging.basicConfig(filename='./logs/yam.log',
                     level=getattr(logging, LOGLEVEL))
 
 
-def start_yam(args):
+def start_yam(args, command_prefix=COMMAND_PREFIX):
     # should yamBot handle with default intents or should we pass something here to the init call?
-    my_yam = YamBot(command_prefix=COMMAND_PREFIX)
+    my_yam = YamBot(command_prefix=command_prefix)
 
     if args:
         # Get token from args if passed
         bot_token = args[0]
     else:
-        # Get token from secret.json if nothing in args
-        with open("secrets.json", "r") as f:
+        # Get token from <secrets.json> config file if nothing in args
+        with open("../configs/secrets.json", "r") as f:
             secrets = json.load(f)
             bot_token = secrets["bot_token"]
 
     my_yam.run(bot_token)
 
 
-# TODO: Implement testing by getting another bot instance to send shit
-
-
 if __name__ == "__main__":
-    start_yam(sys.argv[1:])
+    # TODO: use arg parser, we're probably going to need config files and arg overides
+    start_yam(sys.argv[1:], COMMAND_PREFIX)
